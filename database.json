@@ -1,0 +1,34 @@
+{
+  "users": {},
+  "projects": {
+    "chatai": {
+      "id": "chatai",
+      "name": "chatai",
+      "type": "web",
+      "email": "animeplay306@gmail.com",
+      "secret": "5590d4ec-b71a-48b3-ade4-9d0c8e9e2924",
+      "urls": {
+        "projectId": "chatai",
+        "global": null,
+        "private": "http://localhost:3000/projects/chatai",
+        "download": "http://localhost:3000/api/projects/chatai/download?token=5590d4ec-b71a-48b3-ade4-9d0c8e9e2924",
+        "dev": "http://localhost:3000/edit/chatai?token=5590d4ec-b71a-48b3-ade4-9d0c8e9e2924",
+        "view": "http://localhost:3000/projects/chatai"
+      },
+      "stats": {
+        "visits": 12,
+        "lastVisit": "2026-03-27T19:26:05.615Z",
+        "createdAt": "2026-03-27T19:21:43.477Z",
+        "lastModified": "2026-03-27T19:30:09.075Z"
+      },
+      "files": [
+        "index.html"
+      ]
+    }
+  },
+  "stats": {
+    "totalVisits": 12,
+    "totalCreates": 1
+  },
+  "lastSave": "2026-03-27T19:30:09.075Z"
+}

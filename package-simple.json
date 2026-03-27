@@ -1,0 +1,20 @@
+{
+  "name": "noho-server",
+  "version": "2.0.0",
+  "description": "NOHO Community Server",
+  "main": "server-simple.js",
+  "scripts": {
+    "start": "node server-simple.js",
+    "dev": "nodemon server-simple.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2",
+    "qrcode": "^1.5.3",
+    "uuid": "^9.0.1"
+  },
+  "author": "NOHO Community (nohojs)",
+  "license": "MIT"
+}
+
