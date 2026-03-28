@@ -24,11 +24,58 @@
       "files": [
         "index.html"
       ]
+    },
+    "omar": {
+      "id": "omar",
+      "name": "Omar",
+      "type": "portfolio",
+      "email": "animeplay306@gmail.com",
+      "secret": "abe5ed03-a184-4db2-add9-05f00601a6bd",
+      "urls": {
+        "projectId": "omar",
+        "global": null,
+        "private": "http://localhost:3000/projects/omar",
+        "download": "http://localhost:3000/api/projects/omar/download?token=abe5ed03-a184-4db2-add9-05f00601a6bd",
+        "dev": "http://localhost:3000/edit/omar?token=abe5ed03-a184-4db2-add9-05f00601a6bd",
+        "view": "http://localhost:3000/projects/omar"
+      },
+      "stats": {
+        "visits": 2,
+        "lastVisit": "2026-03-27T22:33:02.819Z",
+        "createdAt": "2026-03-27T22:32:37.195Z"
+      },
+      "files": [
+        "index.html"
+      ]
+    },
+    "plp": {
+      "id": "plp",
+      "name": "plp",
+      "type": "portfolio",
+      "email": "animeplay306@gmail.com",
+      "secret": "1ab9dc4f-c106-4669-bc1e-0d1db8197f2e",
+      "urls": {
+        "projectId": "plp",
+        "global": null,
+        "private": "http://localhost:3000/projects/plp",
+        "download": "http://localhost:3000/api/projects/plp/download?token=1ab9dc4f-c106-4669-bc1e-0d1db8197f2e",
+        "dev": "http://localhost:3000/edit/plp?token=1ab9dc4f-c106-4669-bc1e-0d1db8197f2e",
+        "view": "http://localhost:3000/projects/plp"
+      },
+      "stats": {
+        "visits": 2,
+        "lastVisit": "2026-03-27T22:46:37.583Z",
+        "createdAt": "2026-03-27T22:46:18.909Z",
+        "lastModified": "2026-03-27T22:48:38.535Z"
+      },
+      "files": [
+        "index.html"
+      ]
     }
   },
   "stats": {
-    "totalVisits": 12,
-    "totalCreates": 1
+    "totalVisits": 16,
+    "totalCreates": 3
   },
-  "lastSave": "2026-03-27T19:30:09.075Z"
+  "lastSave": "2026-03-28T20:03:15.262Z"
 }

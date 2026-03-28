@@ -1,6 +1,6 @@
 {
   "name": "noho-server",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "NOHO Community Server - Real URLs Edition",
   "main": "server-simple.js",
   "scripts": {
@@ -28,6 +28,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/animeplay306/noho-server.git"
-  }
+    "url": "git+https://github.com/animeplay306/noho-server.git"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/animeplay306/noho-server/issues"
+  },
+  "homepage": "https://github.com/animeplay306/noho-server#readme"
 }

@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+nohup.out
+output.log
+
+# Archives
+*.tgz
+*.zip
+*.tar.gz
+
+# Binaries
+cloudflared*
+ngrok*
+*.exe
+*.bin
+
+# Database & Secrets
+database.json
+.env
+*.env
+.env.local
+
+# Projects (keep structure only)
+projects/*
+!projects/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temp
+tmp/
+temp/
+*.tmp
+
+# Heavy files
+node_modules/
+*.zip
+*.tgz
+cloudflared*
+*.log
+nohup.out
+output.log
+projects/*/node_modules
+
+node_modules/
+*.zip
+*.tgz
+*.log
+cloudflared*
+nohup.out
+output.log

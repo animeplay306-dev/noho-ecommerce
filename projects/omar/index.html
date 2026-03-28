@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omar | NOHO Project</title>
+    <meta name="description" content="تم إنشاء هذا المشروع بواسطة NOHO Community">
+    <meta name="author" content="animeplay306@gmail.com">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        h1 { font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .subtitle { font-size: 1.2rem; opacity: 0.9; margin-bottom: 2rem; }
+        .info { 
+            background: rgba(0,0,0,0.2); 
+            padding: 1.5rem; 
+            border-radius: 15px; 
+            margin: 2rem 0;
+            font-size: 0.9rem;
+        }
+        .links { display: grid; gap: 1rem; margin-top: 2rem; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-edit { background: white; color: #764ba2; }
+        .btn-download { background: rgba(255,255,255,0.2); color: white; border: 2px solid white; }
+        footer { margin-top: 3rem; opacity: 0.7; font-size: 0.9rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="badge">🚀 NOHO Project</div>
+        <h1>Omar</h1>
+        <p class="subtitle">تم الإنشاء بنجاح</p>
+        
+        <div class="info">
+            <p><strong>المطور:</strong> animeplay306@gmail.com</p>
+            <p><strong>التاريخ:</strong> ٢٨‏/٣‏/٢٠٢٦</p>
+            <p><strong>الحالة:</strong> <span style="color: #4ade80">● نشط</span></p>
+        </div>
+
+        <div class="links">
+            <a href="http://localhost:3000/edit/omar?token=abe5ed03-a184-4db2-add9-05f00601a6bd" class="btn btn-edit">
+                <span>✏️</span> تعديل المشروع
+            </a>
+            <a href="http://localhost:3000/api/projects/omar/download?token=abe5ed03-a184-4db2-add9-05f00601a6bd" class="btn btn-download">
+                <span>📥</span> تحميل الملفات
+            </a>
+        </div>
+
+        <footer>
+            <p>© 2026 NOHO Community</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">Project ID: omar</p>
+        </footer>
+    </div>
+
+    <script>
+        // Visit tracking
+        fetch('/api/projects/omar/visit', { method: 'POST' }).catch(() => {});
+        
+        // Socket.io real-time updates
+        const socket = io();
+        socket.on('project-update', (data) => {
+            if (data.projectId === 'omar') {
+                console.log('Project updated:', data);
+            }
+        });
+    </script>
+</body>
+</html>
