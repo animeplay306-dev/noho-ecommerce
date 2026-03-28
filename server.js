@@ -12,8 +12,8 @@ const http = require('http');
 const { Server } = require('socket.io');
 const NodeCache = require('node-cache');
 const { v4: uuidv4 } = require('uuid');
-const validator = require('validator'); // للتحقق من البيانات
-const bcrypt = require('bcryptjs'); // لتشفير كلمات المرور
+const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const app = express();
 const server = http.createServer(app);
@@ -33,7 +33,7 @@ const CONFIG = {
     allowedTypes: ['web', 'bot-whatsapp', 'bot-telegram', 'bot-discord', 'store', 'portfolio', 'company'],
     devCredentials: { email: 'noho@no', password: 'noho' },
     tunnelUrl: null,
-    adminPhone: '+201283073813', // الرقم الجديد
+    adminPhone: '+201283073813',
     whatsappLink: 'https://wa.me/201283073813',
     version: '2.1.0'
 };
@@ -76,8 +76,8 @@ const limiter = rateLimit({
 });
 
 const createLimiter = rateLimit({
-    windowMs: 60 * 60 * 1000, // 1 ساعة
-    max: 5, // 5 مشاريع في الساعة فقط
+    windowMs: 60 * 60 * 1000,
+    max: 5,
     message: {
         error: 'تم تجاوز الحد المسموح (5 مشاريع/ساعة)',
         contact: CONFIG.whatsappLink
@@ -129,7 +129,6 @@ async function saveDatabase() {
             version: CONFIG.version
         };
         
-        // نسخ احتياطي قبل الحفظ
         try {
             await fs.copyFile(DB_PATH, BACKUP_PATH);
         } catch (e) {
@@ -395,14 +394,12 @@ function generateProjectTemplate(name, email, urls, type = 'web') {
         socket.on('project-update', (data) => {
             if (data.projectId === '${urls.projectId}') {
                 console.log('🔄 Project updated:', data);
-                // إعادة تحميل الصفحة بعد 3 ثواني إذا كان المستخدم في الصفحة
                 if (document.visibilityState === 'visible') {
                     setTimeout(() => location.reload(), 3000);
                 }
             }
         });
         
-        // Online status
         socket.emit('project-online', { projectId: '${urls.projectId}', time: new Date() });
     </script>
 </body>
@@ -446,7 +443,6 @@ app.post('/api/projects/create', async (req, res) => {
             });
         }
 
-        // التحقق من عدد المشاريع للمستخدم
         const userProjects = Array.from(DB.projects.values()).filter(p => p.email === email);
         if (userProjects.length >= CONFIG.maxProjectsPerUser) {
             return res.status(403).json({
@@ -460,7 +456,6 @@ app.post('/api/projects/create', async (req, res) => {
         const baseUrl = getBaseUrl();
         const projectSecret = uuidv4();
         
-        // الـ 4 روابط
         const urls = {
             projectId,
             global: CONFIG.tunnelUrl ? `${CONFIG.tunnelUrl}/projects/${projectId}` : null,
@@ -497,18 +492,15 @@ app.post('/api/projects/create', async (req, res) => {
         DB.projects.set(projectId, project);
         DB.stats.totalCreates++;
         
-        // إنشاء الملفات
         const projectDir = path.join(__dirname, 'projects', projectId);
         await fs.mkdir(projectDir, { recursive: true });
         
         const htmlContent = generateProjectTemplate(name, email, urls, type);
         await fs.writeFile(path.join(projectDir, 'index.html'), htmlContent);
         
-        // QR Code
         const qrTarget = urls.global || urls.private;
         const qrCode = await generateQRCode(qrTarget, { color: '#6366f1' });
         
-        // Notify via WebSocket
         io.emit('new-project', { 
             projectId, 
             name, 
@@ -576,7 +568,6 @@ app.get('/api/projects/:projectId/info', async (req, res) => {
     const project = DB.projects.get(req.params.projectId);
     if (!project) return res.status(404).json({ error: 'غير موجود' });
     
-    // Check if request is from owner (has secret)
     const isOwner = req.query.token === project.secret;
     
     res.json({
@@ -595,7 +586,6 @@ app.post('/api/projects/:projectId/visit', async (req, res) => {
         project.stats.lastVisit = new Date().toISOString();
         DB.stats.totalVisits++;
         
-        // Notify owner if online
         io.to(project.id).emit('new-visit', {
             time: new Date(),
             total: project.stats.visits
@@ -619,7 +609,6 @@ app.get('/api/projects/:projectId/download', async (req, res) => {
 
         const projectDir = path.join(__dirname, 'projects', projectId);
         
-        // التحقق من وجود المجلد
         try {
             await fs.access(projectDir);
         } catch {
@@ -648,7 +637,6 @@ app.get('/api/projects/:projectId/download', async (req, res) => {
         
         archive.pipe(res);
         
-        // إضافة ملف README
         const readme = `# ${project.name}
 Created by: ${project.email}
 Date: ${project.stats.createdAt}
@@ -687,8 +675,7 @@ app.post('/api/projects/:projectId/update', async (req, res) => {
             return res.status(400).json({ error: 'الكود مطلوب' });
         }
         
-        // Validation للكود (XSS protection)
-        if (code.length > 1000000) { // 1MB max
+        if (code.length > 1000000) {
             return res.status(400).json({ error: 'حجم الكود كبير جداً' });
         }
         
@@ -809,7 +796,7 @@ app.get('/api/projects/search', (req, res) => {
 
 // ==================== PAGES ====================
 
-// Edit Page - محسن
+// Edit Page
 app.get('/edit/:projectId', async (req, res) => {
     const { projectId } = req.params;
     const { token } = req.query;
@@ -1079,7 +1066,6 @@ app.get('/edit/:projectId', async (req, res) => {
         let history = [];
         let historyIndex = -1;
         
-        // Socket.io
         const socket = io();
         socket.emit('join-project', projectId);
         
@@ -1088,7 +1074,6 @@ app.get('/edit/:projectId', async (req, res) => {
             showToast('زيارة جديدة!', 'info');
         });
         
-        // Load code
         async function loadCode() {
             try {
                 const res = await fetch('/projects/' + projectId + '/index.html');
@@ -1103,7 +1088,6 @@ app.get('/edit/:projectId', async (req, res) => {
             }
         }
         
-        // History management
         function addToHistory(code) {
             history = history.slice(0, historyIndex + 1);
             history.push(code);
@@ -1118,7 +1102,6 @@ app.get('/edit/:projectId', async (req, res) => {
             }
         }
         
-        // Auto-save history on change
         editor.addEventListener('input', () => {
             updateCharCount();
             clearTimeout(window.saveTimeout);
@@ -1171,7 +1154,6 @@ app.get('/edit/:projectId', async (req, res) => {
         }
         
         function formatCode() {
-            // Simple HTML formatting
             let code = editor.value;
             code = code.replace(/>\\s+</g, '>\\n<');
             code = code.replace(/(<[^/][^>]*>)/g, '\\n$1');
@@ -1222,7 +1204,6 @@ app.get('/edit/:projectId', async (req, res) => {
             window.open('${CONFIG.whatsappLink}?text=استفسار عن مشروع ${project.name}', '_blank');
         }
         
-        // Keyboard shortcuts
         editor.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
                 if (e.key === 's') {
@@ -1246,14 +1227,12 @@ app.get('/edit/:projectId', async (req, res) => {
             }
         });
         
-        // Auto-save every 30 seconds
         setInterval(() => {
             if (editor.value !== originalCode) {
                 saveCode();
             }
         }, 30000);
         
-        // Warn before leaving
         window.addEventListener('beforeunload', (e) => {
             if (editor.value !== originalCode) {
                 e.preventDefault();
@@ -1268,7 +1247,7 @@ app.get('/edit/:projectId', async (req, res) => {
     `);
 });
 
-// Main Interface - محسن
+// Main Interface
 app.get('/', (req, res) => {
     res.send(`
 <!DOCTYPE html>
@@ -1585,7 +1564,6 @@ app.get('/', (req, res) => {
         }
         
         function showNotification(msg) {
-            // Simple notification
             if ('Notification' in window && Notification.permission === 'granted') {
                 new Notification('NOHO Community', { body: msg, icon: '✨' });
             }
@@ -1622,7 +1600,6 @@ app.get('/', (req, res) => {
                 if (data.success) {
                     currentProject = data;
                     showResults(data);
-                    // Request notification permission
                     if ('Notification' in window && Notification.permission === 'default') {
                         Notification.requestPermission();
                     }
@@ -1686,24 +1663,24 @@ app.get('/', (req, res) => {
                 }
             ];
             
-            container.innerHTML = links.filter(l => l.show).map(link => \\`
-                <div class="link-card \\${link.type}">
+            container.innerHTML = links.filter(l => l.show).map(link => \`
+                <div class="link-card \${link.type}">
                     <div class="link-icon">
-                        <i class="fas fa-\\${link.icon}"></i>
+                        <i class="fas fa-\${link.icon}"></i>
                     </div>
-                    <h3>\\${link.title}</h3>
-                    <p style="color: #94a3b8; font-size: 0.9rem; margin: 0.5rem 0;">\\${link.desc}</p>
+                    <h3>\${link.title}</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin: 0.5rem 0;">\${link.desc}</p>
                     <div style="background: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 8px; margin: 1rem 0; font-family: monospace; font-size: 0.8rem; word-break: break-all; direction: ltr; color: #cbd5e1;">
-                        \\${link.url}
+                        \${link.url}
                     </div>
-                    <button class="btn" style="background: \\${link.color}; color: white; width: 100%; margin-bottom: 0.5rem;" onclick="copy('\\${link.url}')">
+                    <button class="btn" style="background: \${link.color}; color: white; width: 100%; margin-bottom: 0.5rem;" onclick="copy('\${link.url}')">
                         <i class="fas fa-copy"></i> نسخ الرابط
                     </button>
-                    <button class="btn" style="background: rgba(255,255,255,0.1); color: white; width: 100%;" onclick="window.open('\\${link.url}')">
+                    <button class="btn" style="background: rgba(255,255,255,0.1); color: white; width: 100%;" onclick="window.open('\${link.url}')">
                         <i class="fas fa-external-link-alt"></i> فتح
                     </button>
                 </div>
-            \\`).join('');
+            \`).join('');
             
             document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
         }
@@ -1712,7 +1689,6 @@ app.get('/', (req, res) => {
             navigator.clipboard.writeText(text).then(() => {
                 alert('✅ تم نسخ الرابط!');
             }).catch(() => {
-                // Fallback
                 const textarea = document.createElement('textarea');
                 textarea.value = text;
                 document.body.appendChild(textarea);
@@ -1723,7 +1699,6 @@ app.get('/', (req, res) => {
             });
         }
         
-        // Load initial stats
         fetch('/api/stats').then(r => r.json()).then(s => {
             if (s.success) updateStats(s.stats);
         });
@@ -1817,7 +1792,7 @@ process.on('SIGTERM', async () => {
 });
 
 process.on('SIGINT', async () => {
-    console.log('\\n⚠️ SIGINT received, saving database...');
+    console.log('\n⚠️ SIGINT received, saving database...');
     await saveDatabase();
     process.exit(0);
 });
